@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grand Marina - Water Monitoring Dashboard</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #0f0f0f; color: #e0e0e0; min-height: 100vh; }
+  header { background: #1a1a1a; padding: 18px 30px; border-bottom: 3px solid #f97316; display: flex; justify-content: space-between; align-items: center; }
+  header .left { display: flex; align-items: center; gap: 12px; }
+  header .emoji { font-size: 30px; }
+  header h1 { font-size: 20px; color: #f97316; letter-spacing: 1px; }
+  header p { font-size: 12px; color: #777; margin-top: 2px; }
+  .live-badge { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #aaa; }
+  .dot { width: 9px; height: 9px; border-radius: 50%; background: #f97316; animation: pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; box-shadow: 0 0 0 0 rgba(249,115,22,0.5); } 50% { opacity:0.5; box-shadow: 0 0 0 8px rgba(249,115,22,0); } }
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 20px 30px 0; }
+  .stat-card { background: #1a1a1a; border-radius: 10px; padding: 20px; border: 1px solid #2a2a2a; border-top: 3px solid #f97316; text-align: center; }
+  .stat-card h3 { font-size: 11px; color: #777; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+  .stat-card .num { font-size: 44px; font-weight: bold; font-family: monospace; }
+  .num.green { color: #22c55e; } .num.red { color: #ef4444; } .num.orange { color: #f97316; }
+  .zones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding: 20px 30px 0; }
+  .zone-card { background: #1a1a1a; border-radius: 10px; padding: 18px; border: 1px solid #2a2a2a; border-top: 3px solid #f97316; }
+  .zone-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; }
+  .zone-header .emoji { font-size: 22px; }
+  .zone-header h3 { font-size: 13px; color: #f97316; font-weight: bold; letter-spacing: 0.5px; }
+  .zone-header .badge { margin-left: auto; padding: 2px 8px; border-radius: 4px; font-size: 10px; font-weight: bold; }
+  .badge.online { background: #14532d; color: #22c55e; } .badge.offline { background: #2a2a2a; color: #555; }
+  .metric { margin-bottom: 10px; }
+  .metric label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px; }
+  .metric .val { font-size: 22px; font-weight: bold; color: #f97316; font-family: monospace; }
+  .metric .unit { font-size: 11px; color: #666; margin-left: 4px; }
+  .bottom-row { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; padding: 20px 30px 30px; }
+  .security-status { background: #1a1a1a; border-radius: 10px; padding: 18px; border: 1px solid #2a2a2a; border-top: 3px solid #f97316; }
+  .security-status h2 { font-size: 12px; color: #f97316; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+  .check { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 13px; }
+  .check .icon { font-size: 15px; } .check .label { color: #ccc; flex: 1; } .check .active { color: #22c55e; font-size: 11px; font-weight: bold; }
+  .last-check { font-size: 11px; color: #555; margin-top: 14px; }
+  .ws-status { font-size: 11px; margin-top: 6px; } .ws-status.connected { color: #22c55e; } .ws-status.disconnected { color: #ef4444; }
+  .event-log { background: #1a1a1a; border-radius: 10px; padding: 18px; border: 1px solid #2a2a2a; border-top: 3px solid #f97316; }
+  .event-log h2 { font-size: 12px; color: #f97316; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; }
+  .log-list { max-height: 260px; overflow-y: auto; }
+  .log-entry { padding: 9px 12px; font-size: 12px; display: flex; justify-content: space-between; align-items: center; border-radius: 4px; margin-bottom: 4px; }
+  .log-entry.accept { border-left: 3px solid #22c55e; background: #0a1a0a; }
+  .log-entry.reject { border-left: 3px solid #ef4444; background: #1a0a0a; }
+  .log-entry .tag { padding: 2px 7px; border-radius: 3px; font-size: 10px; font-weight: bold; margin-right: 8px; }
+  .tag.accept { background: #14532d; color: #22c55e; } .tag.reject { background: #450a0a; color: #ef4444; }
+  .log-entry .time { color: #555; font-size: 11px; white-space: nowrap; margin-left: 8px; }
+  .empty-log { padding: 30px; text-align: center; color: #444; font-size: 13px; }
+  ::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: #1a1a1a; } ::-webkit-scrollbar-thumb { background: #f97316; border-radius: 2px; }
+</style>
+</head>
+<body>
+<header>
+  <div class="left">
+    <div class="emoji">🌊</div>
+    <div><h1>GRAND MARINA</h1><p>Water Monitoring System &nbsp;|&nbsp; Powered by Hydroficient</p></div>
+  </div>
+  <div class="live-badge"><div class="dot"></div> LIVE &nbsp;|&nbsp; <span id="clock">--:--:--</span></div>
+</header>
+
+<div class="stats-row">
+  <div class="stat-card"><h3>Valid Messages</h3><div class="num green" id="stat-valid">0</div></div>
+  <div class="stat-card"><h3>Attacks Blocked</h3><div class="num red" id="stat-rejected">0</div></div>
+  <div class="stat-card"><h3>Total Processed</h3><div class="num orange" id="stat-total">0</div></div>
+</div>
+
+<div class="zones">
+  <div class="zone-card">
+    <div class="zone-header"><div class="emoji">🏢</div><h3>MAIN BUILDING</h3><span class="badge offline" id="badge-main">OFFLINE</span></div>
+    <div class="metric"><label>Pressure</label><span class="val" id="main-pressure">--</span><span class="unit">PSI</span></div>
+    <div class="metric"><label>Flow Rate</label><span class="val" id="main-flow">--</span><span class="unit">LPM</span></div>
+    <div class="metric"><label>Gate Position</label><span class="val" id="main-gate">--</span><span class="unit">°</span></div>
+  </div>
+  <div class="zone-card">
+    <div class="zone-header"><div class="emoji">🏊</div><h3>POOL &amp; SPA</h3><span class="badge offline" id="badge-pool">OFFLINE</span></div>
+    <div class="metric"><label>Pressure</label><span class="val" id="pool-pressure">--</span><span class="unit">PSI</span></div>
+    <div class="metric"><label>Flow Rate</label><span class="val" id="pool-flow">--</span><span class="unit">LPM</span></div>
+    <div class="metric"><label>Gate Position</label><span class="val" id="pool-gate">--</span><span class="unit">°</span></div>
+  </div>
+  <div class="zone-card">
+    <div class="zone-header"><div class="emoji">🍳</div><h3>KITCHEN &amp; LAUNDRY</h3><span class="badge offline" id="badge-kitchen">OFFLINE</span></div>
+    <div class="metric"><label>Pressure</label><span class="val" id="kitchen-pressure">--</span><span class="unit">PSI</span></div>
+    <div class="metric"><label>Flow Rate</label><span class="val" id="kitchen-flow">--</span><span class="unit">LPM</span></div>
+    <div class="metric"><label>Gate Position</label><span class="val" id="kitchen-gate">--</span><span class="unit">°</span></div>
+  </div>
+</div>
+
+<div class="bottom-row">
+  <div class="security-status">
+    <h2>🛡️ Security Status</h2>
+    <div class="check"><span class="icon">🔐</span><span class="label">HMAC Verification</span><span class="active">ACTIVE</span></div>
+    <div class="check"><span class="icon">⏱️</span><span class="label">Timestamp Check (30s)</span><span class="active">ACTIVE</span></div>
+    <div class="check"><span class="icon">🔢</span><span class="label">Sequence Counter</span><span class="active">ACTIVE</span></div>
+    <div class="check"><span class="icon">🔒</span><span class="label">mTLS Encryption</span><span class="active">ACTIVE</span></div>
+    <div class="last-check">Last event: <span id="last-check">--:--:--</span></div>
+    <div class="ws-status disconnected" id="ws-status">⚠ Connecting to server...</div>
+  </div>
+  <div class="event-log">
+    <h2>📋 Security Event Log</h2>
+    <div class="log-list" id="log-list"><div class="empty-log">Waiting for messages...</div></div>
+  </div>
+</div>
+
+<script>
+  function updateClock() { document.getElementById('clock').textContent = new Date().toLocaleTimeString(); }
+  setInterval(updateClock, 1000); updateClock();
+
+  let stats = { valid: 0, rejected: 0, total: 0 };
+
+  function updateStats() {
+    document.getElementById('stat-valid').textContent = stats.valid;
+    document.getElementById('stat-rejected').textContent = stats.rejected;
+    document.getElementById('stat-total').textContent = stats.total;
+  }
+
+  function updateZone(zone, data) {
+    const prefix = zone === 'main_building' ? 'main' : zone === 'pool_spa' ? 'pool' : 'kitchen';
+    const badgeId = prefix === 'main' ? 'badge-main' : prefix === 'pool' ? 'badge-pool' : 'badge-kitchen';
+    if (data.pressure_psi !== undefined) document.getElementById(prefix + '-pressure').textContent = data.pressure_psi;
+    if (data.flow_rate_gpm !== undefined) document.getElementById(prefix + '-flow').textContent = data.flow_rate_gpm;
+    if (data.valve_position !== undefined) document.getElementById(prefix + '-gate').textContent = data.valve_position;
+    const badge = document.getElementById(badgeId);
+    if (badge) { badge.textContent = 'ONLINE'; badge.className = 'badge online'; }
+  }
+
+  function addLog(type, text, time) {
+    const list = document.getElementById('log-list');
+    const empty = list.querySelector('.empty-log');
+    if (empty) empty.remove();
+    const entry = document.createElement('div');
+    entry.className = 'log-entry ' + type;
+    entry.innerHTML = `<span><span class="tag ${type}">${type === 'accept' ? 'ACCEPTED' : 'REJECTED'}</span>${text}</span><span class="time">${time}</span>`;
+    list.insertBefore(entry, list.firstChild);
+    if (list.children.length > 60) list.removeChild(list.lastChild);
+    document.getElementById('last-check').textContent = time;
+  }
+
+  function connect() {
+    const ws = new WebSocket('ws://localhost:8765');
+    const statusEl = document.getElementById('ws-status');
+
+    ws.onopen = () => {
+      statusEl.textContent = '✓ Connected to security server';
+      statusEl.className = 'ws-status connected';
+      setInterval(() => { if (ws.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type: 'ping' })); }, 10000);
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        if (msg.type === 'stats_update') {
+          stats.valid = msg.data.valid; stats.rejected = msg.data.rejected; stats.total = msg.data.total; updateStats();
+        } else if (msg.type === 'valid_message') {
+          stats.valid++; stats.total++; updateStats();
+          updateZone(msg.data.zone, msg.data);
+          addLog('accept', `${msg.data.device_id} — Flow: ${msg.data.flow_rate_gpm} LPM | Pressure: ${msg.data.pressure_psi} PSI`, msg.data.timestamp);
+        } else if (msg.type === 'attack') {
+          stats.rejected++; stats.total++; updateStats();
+          addLog('reject', `${msg.data.source} — ${msg.data.attack_type}: ${msg.data.description}`, msg.data.timestamp);
+        }
+      } catch(e) { console.error(e); }
+    };
+
+    ws.onclose = () => { statusEl.textContent = '⚠ Disconnected. Reconnecting...'; statusEl.className = 'ws-status disconnected'; setTimeout(connect, 3000); };
+    ws.onerror = () => { statusEl.textContent = '⚠ Cannot reach server. Is Sub_dash_DEFEND.py running?'; statusEl.className = 'ws-status disconnected'; };
+  }
+
+  connect();
+</script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+[
+  {
+    "topic": "hydroficient/grandmarina/device-001/sensors",
+    "payload": {
+      "device_id": "HYDROLOGIC-Device-001",
+      "timestamp": "2026-03-27T09:26:55.070795Z",
+      "sequence": 1,
+      "readings": {
+        "pressure_upstream": 59.56,
+        "pressure_downstream": 56.47,
+        "flow_rate": 50.25,
+        "gate_a_position": 45.3,
+        "gate_b_position": 43.5
+      },
+      "status": "operational",
+      "hmac": "4a679a733bb56456a3c3b0e7a60eff646dc84d3e4b80db7dccf9353c4be909c8"
+    },
+    "captured_at": "2026-03-27T09:26:55.072056Z",
+    "original_payload_bytes": "{\n  \"device_id\": \"HYDROLOGIC-Device-001\",\n  \"timestamp\": \"2026-03-27T09:26:55.070795Z\",\n  \"sequence\": 1,\n  \"readings\": {\n    \"pressure_upstream\": 59.56,\n    \"pressure_downstream\": 56.47,\n    \"flow_rate\": 50.25,\n    \"gate_a_position\": 45.3,\n    \"gate_b_position\": 43.5\n  },\n  \"status\": \"operational\",\n  \"hmac\": \"4a679a733bb56456a3c3b0e7a60eff646dc84d3e4b80db7dccf9353c4be909c8\"\n}"
+  },
+  {
+    "topic": "hydroficient/grandmarina/device-001/sensors",
+    "payload": {
+      "device_id": "HYDROLOGIC-Device-001",
+      "timestamp": "2026-03-27T09:27:00.071317Z",
+      "sequence": 2,
+      "readings": {
+        "pressure_upstream": 58.07,
+        "pressure_downstream": 54.36,
+        "flow_rate": 47.97,
+        "gate_a_position": 45.3,
+        "gate_b_position": 43.1
+      },
+      "status": "operational",
+      "hmac": "54c715edd389a3b95149f11b3ec9d0aff142956e6f424393f941449b4b4e61bb"
+    },
+    "captured_at": "2026-03-27T09:27:00.072282Z",
+    "original_payload_bytes": "{\n  \"device_id\": \"HYDROLOGIC-Device-001\",\n  \"timestamp\": \"2026-03-27T09:27:00.071317Z\",\n  \"sequence\": 2,\n  \"readings\": {\n    \"pressure_upstream\": 58.07,\n    \"pressure_downstream\": 54.36,\n    \"flow_rate\": 47.97,\n    \"gate_a_position\": 45.3,\n    \"gate_b_position\": 43.1\n  },\n  \"status\": \"operational\",\n  \"hmac\": \"54c715edd389a3b95149f11b3ec9d0aff142956e6f424393f941449b4b4e61bb\"\n}"
+  },
+  {
+    "topic": "hydroficient/grandmarina/device-001/sensors",
+    "payload": {
+      "device_id": "HYDROLOGIC-Device-001",
+      "timestamp": "2026-03-27T09:27:05.074907Z",
+      "sequence": 3,
+      "readings": {
+        "pressure_upstream": 59.92,
+        "pressure_downstream": 56.92,
+        "flow_rate": 46.14,
+        "gate_a_position": 46.4,
+        "gate_b_position": 42.4
+      },
+      "status": "operational",
+      "hmac": "5c4755e606dd5773e8183aa23b9d7df230a7fbcaea8c0eef01093d074e4ae203"
+    },
+    "captured_at": "2026-03-27T09:27:05.075815Z",
+    "original_payload_bytes": "{\n  \"device_id\": \"HYDROLOGIC-Device-001\",\n  \"timestamp\": \"2026-03-27T09:27:05.074907Z\",\n  \"sequence\": 3,\n  \"readings\": {\n    \"pressure_upstream\": 59.92,\n    \"pressure_downstream\": 56.92,\n    \"flow_rate\": 46.14,\n    \"gate_a_position\": 46.4,\n    \"gate_b_position\": 42.4\n  },\n  \"status\": \"operational\",\n  \"hmac\": \"5c4755e606dd5773e8183aa23b9d7df230a7fbcaea8c0eef01093d074e4ae203\"\n}"
+  },
+  {
+    "topic": "hydroficient/grandmarina/device-001/sensors",
+    "payload": {
+      "device_id": "HYDROLOGIC-Device-001",
+      "timestamp": "2026-03-27T09:27:10.079922Z",
+      "sequence": 4,
+      "readings": {
+        "pressure_upstream": 58.39,
+        "pressure_downstream": 55.29,
+        "flow_rate": 48.89,
+        "gate_a_position": 43.6,
+        "gate_b_position": 43.2
+      },
+      "status": "operational",
+      "hmac": "693d0f344e03a4bd81a12755f459e4acec5536dd2ad23e6895c3fffb6fbb1df9"
+    },
+    "captured_at": "2026-03-27T09:27:10.081539Z",
+    "original_payload_bytes": "{\n  \"device_id\": \"HYDROLOGIC-Device-001\",\n  \"timestamp\": \"2026-03-27T09:27:10.079922Z\",\n  \"sequence\": 4,\n  \"readings\": {\n    \"pressure_upstream\": 58.39,\n    \"pressure_downstream\": 55.29,\n    \"flow_rate\": 48.89,\n    \"gate_a_position\": 43.6,\n    \"gate_b_position\": 43.2\n  },\n  \"status\": \"operational\",\n  \"hmac\": \"693d0f344e03a4bd81a12755f459e4acec5536dd2ad23e6895c3fffb6fbb1df9\"\n}"
+  },
+  {
+    "topic": "hydroficient/grandmarina/device-001/sensors",
+    "payload": {
+      "device_id": "HYDROLOGIC-Device-001",
+      "timestamp": "2026-03-27T09:27:15.080843Z",
+      "sequence": 5,
+      "readings": {
+        "pressure_upstream": 59.51,
+        "pressure_downstream": 54.25,
+        "flow_rate": 49.94,
+        "gate_a_position": 46.2,
+        "gate_b_position": 45.6
+      },
+      "status": "operational",
+      "hmac": "eb28d8a7695319fa6290377e8d9b55bfe58d060362b0956a6da60f3a6877d6ea"
+    },
+    "captured_at": "2026-03-27T09:27:15.082528Z",
+    "original_payload_bytes": "{\n  \"device_id\": \"HYDROLOGIC-Device-001\",\n  \"timestamp\": \"2026-03-27T09:27:15.080843Z\",\n  \"sequence\": 5,\n  \"readings\": {\n    \"pressure_upstream\": 59.51,\n    \"pressure_downstream\": 54.25,\n    \"flow_rate\": 49.94,\n    \"gate_a_position\": 46.2,\n    \"gate_b_position\": 45.6\n  },\n  \"status\": \"operational\",\n  \"hmac\": \"eb28d8a7695319fa6290377e8d9b55bfe58d060362b0956a6da60f3a6877d6ea\"\n}"
+  }
+]
